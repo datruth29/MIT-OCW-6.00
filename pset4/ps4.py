@@ -57,6 +57,16 @@ def nestEggVariable(salary, save, growthRates):
       account (integers between 0 and 100).
     - return: a list of your retirement account value at the end of each year.
     """
+    account = []
+
+    for growthRate in growthRates:
+        if account == []:
+            amount = salary * save * 0.01
+            account.append(amount)
+        else:
+            amount = account[-1] * (1 + 0.01 * growthRate) + salary * save * 0.01
+            account.append(amount)
+    return account
 
 def testNestEggVariable():
     salary      = 10000
@@ -82,7 +92,13 @@ def postRetirement(savings, growthRates, expenses):
       retirement.
     - return: a list of your retirement account value at the end of each year.
     """
-    # TODO: Your code here.
+    account = [savings]
+
+    for growthRate in growthRates:
+        amount = account[-1] * (1 + 0.01 * growthRate) - expenses
+        account.append(amount)
+    return account
+
 
 def testPostRetirement():
     savings     = 100000
