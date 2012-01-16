@@ -1,5 +1,5 @@
 # Problem Set 4
-# Name: 
+# Name: Adam Collado
 # Collaborators: 
 # Time: 
 
@@ -18,7 +18,18 @@ def nestEggFixed(salary, save, growthRate, years):
     - return: a list whose values are the size of your retirement account at
       the end of each year.
     """
-    # TODO: Your code here.
+    account = []
+    
+    for year in range(years):
+        if year == 0:
+            amount = salary * save * 0.01
+            account.append(amount)
+        else:
+            print year
+            amount = account[year-1] * (1 + 0.01 * growthRate) + salary * save * 0.01    
+            account.append(amount)
+    return account 
+
 
 def testNestEggFixed():
     salary     = 10000
