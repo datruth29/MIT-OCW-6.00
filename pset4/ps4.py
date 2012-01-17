@@ -130,26 +130,23 @@ def findMaxExpenses(salary, save, preRetireGrowthRates, postRetireGrowthRates,
     """
     preRetireSavings = nestEggVariable(salary, save, preRetireGrowthRates)
     savings = preRetireSavings[-1]
-    minexpense = 0
-    maxexpense = savings
-    guess = maxexpense/2.0
-    postRetireSavings = postRetirement(savings, postRetireGrowthRates, maxexpense)
+    minExpense = 0
+    maxExpense = savings
+    guess = maxExpense/2.0
+    postRetireSavings = postRetirement(savings, postRetireGrowthRates, maxExpense)
     ctrl = 1
-    print maxexpense
     while (abs(postRetireSavings[-1]) > epsilon and ctrl <= 100):
         postRetireSavings = postRetirement(savings, postRetireGrowthRates, guess)
         endSavings = postRetireSavings[-1]
         if endSavings > 0:
-            minexpense = guess
+            minExpense = guess
         else:
-            maxexpense = guess
-        guess = (minexpense + maxexpense)/2.0
-        print "ctrl = ", ctrl, "maxexpenses = ", maxexpense, "minexpenses = ", minexpense, "endSavings = ", endSavings, "guess = ", guess
+            maxExpense = guess
+        guess = (minExpense + maxExpense)/2.0
+        print "ctrl = ", ctrl, "maxexpenses = ", maxExpense, "minexpenses = ", minExpense, "endSavings = ", endSavings, "guess = ", guess
         ctrl += 1
     assert ctrl <= 100, "ctrl went over amount"
-    print ctrl
-    return maxexpense
-    # TODO: Your code here.
+    return maxExpense
 
 def testFindMaxExpenses():
     salary                = 10000
@@ -164,3 +161,6 @@ def testFindMaxExpenses():
     # 1229.95548986
 
     # TODO: Add more test cases here.
+
+
+testFindMaxExpenses()
