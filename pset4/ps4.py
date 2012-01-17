@@ -25,7 +25,6 @@ def nestEggFixed(salary, save, growthRate, years):
             amount = salary * save * 0.01
             account.append(amount)
         else:
-            print year
             amount = account[year-1] * (1 + 0.01 * growthRate) + salary * save * 0.01    
             account.append(amount)
     return account 
@@ -129,6 +128,27 @@ def findMaxExpenses(salary, save, preRetireGrowthRates, postRetireGrowthRates,
     - epsilon: an upper bound on the absolute value of the amount remaining in
       the investment fund at the end of retirement.
     """
+    preRetireSavings = nestEggVariable(salary, save, preRetireGrowthRates)
+    savings = preRetireSavings[-1]
+    minexpense = 0
+    maxexpense = savings
+    guess = maxexpense/2.0
+    postRetireSavings = postRetirement(savings, postRetireGrowthRates, maxexpense)
+    ctrl = 1
+    print maxexpense
+    while (abs(postRetireSavings[-1]) > epsilon and ctrl <= 100):
+        postRetireSavings = postRetirement(savings, postRetireGrowthRates, guess)
+        endSavings = postRetireSavings[-1]
+        if endSavings > 0:
+            minexpense = guess
+        else:
+            maxexpense = guess
+        guess = (minexpense + maxexpense)/2.0
+        print "ctrl = ", ctrl, "maxexpenses = ", maxexpense, "minexpenses = ", minexpense, "endSavings = ", endSavings, "guess = ", guess
+        ctrl += 1
+    assert ctrl <= 100, "ctrl went over amount"
+    print ctrl
+    return maxexpense
     # TODO: Your code here.
 
 def testFindMaxExpenses():
