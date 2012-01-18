@@ -7,6 +7,7 @@
 # Problem 1
 #
 
+
 def nestEggFixed(salary, save, growthRate, years):
     """
     - salary: the amount of money you make each year.
@@ -18,14 +19,15 @@ def nestEggFixed(salary, save, growthRate, years):
     - return: a list whose values are the size of your retirement account at
       the end of each year.
     """
+
+    yearlyContribution = salary * save * 0.01
     account = []
     
     for year in range(years):
-        if year == 0:
-            amount = salary * save * 0.01
-            account.append(amount)
+        if account == []:
+            account.append[yearlyContribution]
         else:
-            amount = account[year-1] * (1 + 0.01 * growthRate) + salary * save * 0.01    
+            amount = account[-1] * (1 + 0.01 * growthRate) + yearlyContribution    
             account.append(amount)
     return account 
 
@@ -56,14 +58,14 @@ def nestEggVariable(salary, save, growthRates):
       account (integers between 0 and 100).
     - return: a list of your retirement account value at the end of each year.
     """
+    yearlyContribution = salary * save * 0.01
     account = []
 
     for growthRate in growthRates:
         if account == []:
-            amount = salary * save * 0.01
-            account.append(amount)
+            account.append(yearlyContribution)
         else:
-            amount = account[-1] * (1 + 0.01 * growthRate) + salary * save * 0.01
+            amount = account[-1] * (1 + 0.01 * growthRate) + yearlyContribution 
             account.append(amount)
     return account
 
@@ -128,25 +130,26 @@ def findMaxExpenses(salary, save, preRetireGrowthRates, postRetireGrowthRates,
     - epsilon: an upper bound on the absolute value of the amount remaining in
       the investment fund at the end of retirement.
     """
-    preRetireSavings = nestEggVariable(salary, save, preRetireGrowthRates)
-    savings = preRetireSavings[-1]
-    minExpense = 0
+
+    savings = nestEggVariable(salary, save, preRetireGrowthRates).pop()
     maxExpense = savings
-    guess = maxExpense/2.0
-    postRetireSavings = postRetirement(savings, postRetireGrowthRates, maxExpense)
+    minExpense = 0
     ctrl = 1
-    while (abs(postRetireSavings[-1]) > epsilon and ctrl <= 100):
-        postRetireSavings = postRetirement(savings, postRetireGrowthRates, guess)
-        endSavings = postRetireSavings[-1]
-        if endSavings > 0:
-            minExpense = guess
-        else:
-            maxExpense = guess
+
+    while True:
         guess = (minExpense + maxExpense)/2.0
-        print "ctrl = ", ctrl, "maxexpenses = ", maxExpense, "minexpenses = ", minExpense, "endSavings = ", endSavings, "guess = ", guess
+        endSavings = postRetirement(savings, postRetireGrowthRates, guess).pop()
+        if (abs(endSavings) > epsilon and ctrl <= 100):
+            if endSavings > 0:
+                minExpense = guess
+            else:
+                maxExpense = guess
+        else:
+            break
+        # print "ctrl = ", ctrl, "maxexpenses = ", maxExpense, "minexpenses = ", minExpense, "endSavings = ", endSavings, "guess = ", guess
         ctrl += 1
-    assert ctrl <= 100, "ctrl went over amount"
-    return maxExpense
+
+    return guess
 
 def testFindMaxExpenses():
     salary                = 10000
